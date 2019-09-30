@@ -53,7 +53,7 @@
                 android:textColor="@color/white"/>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -66,9 +66,9 @@
                     android:hint="@string/sample_plugin_custom_command_title"
                     android:inputType="textFilter|textNoSuggestions"
                     android:textColor="@color/white"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -82,7 +82,7 @@
                     android:inputType="textFilter|textNoSuggestions"
                     android:textColor="@color/white"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
     </ScrollView>

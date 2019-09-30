@@ -53,7 +53,7 @@
                 android:text="@string/sample_plugin_receiver_ip_description"
                 android:textColor="@color/white"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -67,7 +67,7 @@
                     android:inputType="textFilter|textNoSuggestions"
                     android:textColor="@color/white"/>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="match_parent"
