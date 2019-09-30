@@ -17,6 +17,7 @@
 
 package io.jesec.yatse.plugin.lg
 
+import android.os.AsyncTask
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
@@ -24,10 +25,19 @@ import android.widget.Toast
 
 import java.util.ArrayList
 
+import java.net.Socket
+
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+
+import kotlin.math.round
+
 import tv.yatse.plugin.avreceiver.api.AVReceiverPluginService
 import tv.yatse.plugin.avreceiver.api.PluginCustomCommand
 import tv.yatse.plugin.avreceiver.api.YatseLogger
 import io.jesec.yatse.plugin.lg.helpers.PreferencesHelper
+import java.lang.Exception
 
 /**
  * Sample AVReceiverPluginService that implement all functions with dummy code that displays Toast and logs to main Yatse log system.
@@ -42,8 +52,47 @@ class AVPluginService : AVReceiverPluginService() {
     private var mHostName: String? = null
     private var mHostIp: String? = null
 
+    private var mReceiverIP: String? = null
+
     private var mIsMuted = false
     private var mVolumePercent = 50.0
+
+    internal class SendDataTask : AsyncTask<String, Void, String>() {
+        override fun doInBackground(vararg params: String) : String {
+            val aesIv = IvParameterSpec("'%^Ur7gy\$~t+f)%@".toByteArray())
+            val aesKey = SecretKeySpec("T^&*J%^7tr~4^%^&I(o%^!jIJ__+a0 k".toByteArray(), "AES")
+
+            try {
+                val s = Socket(params[0], 9741)
+                val os = s.getOutputStream()
+
+                val ec = Cipher.getInstance("AES/CBC/NoPadding")
+                ec.init(Cipher.ENCRYPT_MODE, aesKey, aesIv)
+
+                val padlen = 16 - (params[1].length % 16)
+
+                var paddedData = params[1].toByteArray()
+
+                for (i in 1..padlen) {
+                    paddedData += padlen.toByte()
+                }
+
+                val encryptedData = ec.doFinal(paddedData)
+
+                val prelude = byteArrayOf(0x10, 0x00, 0x00, 0x00, encryptedData.size.toByte())
+
+                val packet = prelude + encryptedData
+
+                os.write(packet)
+
+                os.close()
+                s.close()
+            } catch (e: Exception) {
+            }
+
+            return ""
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -63,7 +112,11 @@ class AVPluginService : AVReceiverPluginService() {
 
     override fun setMuteStatus(status: Boolean): Boolean {
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Setting mute status : %s", status)
-        displayToast("Setting mute status : $status")
+        if (mReceiverIP == null) {
+            return false
+        }
+        SendDataTask().execute(mReceiverIP,
+                "{\"cmd\": \"set\", \"data\": {\"b_mute\": $status}, \"msg\": \"SPK_LIST_VIEW_INFO\"}")
         mIsMuted = status
         return true
     }
@@ -74,14 +127,17 @@ class AVPluginService : AVReceiverPluginService() {
 
     override fun toggleMuteStatus(): Boolean {
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Toggling mute status")
-        displayToast("Toggling mute status")
-        mIsMuted = !mIsMuted
-        return true
+        return setMuteStatus(!mIsMuted)
     }
 
     override fun setVolumeLevel(volume: Double): Boolean {
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Setting volume level : %s", volume)
-        displayToast("Setting volume : $volume")
+        if (mReceiverIP == null) {
+            return false
+        }
+        val actualVolume = round(volume / 5)
+        SendDataTask().execute(mReceiverIP,
+                "{\"cmd\": \"set\", \"data\": {\"i_vol\": $actualVolume}, \"msg\": \"SPK_LIST_VIEW_INFO\"}")
         mVolumePercent = volume
         return true
     }
@@ -93,15 +149,13 @@ class AVPluginService : AVReceiverPluginService() {
     override fun volumePlus(): Boolean {
         mVolumePercent = Math.min(100.0, mVolumePercent + 5)
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Calling volume plus")
-        displayToast("Volume plus")
-        return true
+        return setVolumeLevel(mVolumePercent)
     }
 
     override fun volumeMinus(): Boolean {
         mVolumePercent = Math.max(0.0, mVolumePercent - 5)
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Calling volume minus")
-        displayToast("Volume minus")
-        return true
+        return setVolumeLevel(mVolumePercent)
     }
 
     override fun refresh(): Boolean {
@@ -132,8 +186,8 @@ class AVPluginService : AVReceiverPluginService() {
         mHostUniqueId = uniqueId
         mHostName = name
         mHostIp = ip
-        val receiverIp = PreferencesHelper.getInstance(applicationContext)!!.hostIp(mHostUniqueId)
-        if (TextUtils.isEmpty(receiverIp)) {
+        mReceiverIP = PreferencesHelper.getInstance(applicationContext)!!.hostIp(mHostUniqueId)
+        if (TextUtils.isEmpty(mReceiverIP)) {
             YatseLogger.getInstance(applicationContext).logError(TAG, "No configuration for %s", name)
         }
         YatseLogger.getInstance(applicationContext).logVerbose(TAG, "Connected to : %s / %s ", name, mHostUniqueId)
