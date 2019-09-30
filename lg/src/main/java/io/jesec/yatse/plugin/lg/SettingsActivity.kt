@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 Tolriq / Genimee.
+ * Copyright 2019 Jesse Chan
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +15,7 @@
  *
  */
 
-package tv.yatse.plugin.avreceiver.sample
+package io.jesec.yatse.plugin.lg
 
 import android.app.Activity
 import android.content.Intent
@@ -32,7 +33,7 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import tv.yatse.plugin.avreceiver.api.AVReceiverPluginService
 import tv.yatse.plugin.avreceiver.api.YatseLogger
-import tv.yatse.plugin.avreceiver.sample.helpers.PreferencesHelper
+import io.jesec.yatse.plugin.lg.helpers.PreferencesHelper
 
 /**
  * Sample SettingsActivity that handle correctly the parameters passed by Yatse.
@@ -67,7 +68,7 @@ class SettingsActivity : AppCompatActivity() {
             YatseLogger.getInstance(applicationContext).logError(TAG, "Error : No media center unique id sent")
             Snackbar.make(findViewById(R.id.receiver_settings_content), "Wrong data sent by Yatse !", Snackbar.LENGTH_LONG).show()
         }
-        mViewSettingsTitle.text = getString(R.string.sample_plugin_settings) + " " + mMediaCenterName
+        mViewSettingsTitle.text = getString(R.string.yatse_lg_plugin_settings) + " " + mMediaCenterName
         mViewReceiverIP.setText(PreferencesHelper.getInstance(applicationContext)!!.hostIp(mMediaCenterUniqueId))
     }
 

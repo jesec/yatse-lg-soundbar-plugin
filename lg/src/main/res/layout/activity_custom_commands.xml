@@ -1,5 +1,6 @@
 <!--
   Copyright 2015 Tolriq / Genimee.
+  Copyright 2019 Jesse Chan
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -19,7 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tv.yatse.plugin.avreceiver.sample.CustomCommandsActivity">
+    tools:context="io.jesec.yatse.plugin.lg.CustomCommandsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/sample_plugin_custom_command"
+                android:text="@string/yatse_lg_plugin_custom_command"
                 android:textAllCaps="true"
                 android:textColor="@color/accent"
                 android:textSize="16sp"/>
@@ -49,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@string/sample_plugin_custom_command_description"
+                android:text="@string/yatse_lg_plugin_custom_command_description"
                 android:textColor="@color/white"/>
 
 
@@ -63,7 +64,7 @@
                     android:id="@+id/custom_command_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/sample_plugin_custom_command_title"
+                    android:hint="@string/yatse_lg_plugin_custom_command_title"
                     android:inputType="textFilter|textNoSuggestions"
                     android:textColor="@color/white"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -78,7 +79,7 @@
                     android:id="@+id/custom_command_param1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/sample_plugin_custom_command_param1"
+                    android:hint="@string/yatse_lg_plugin_custom_command_param1"
                     android:inputType="textFilter|textNoSuggestions"
                     android:textColor="@color/white"/>
 

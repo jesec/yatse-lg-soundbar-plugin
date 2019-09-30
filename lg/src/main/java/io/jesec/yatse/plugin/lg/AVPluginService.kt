@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 Tolriq / Genimee.
+ * Copyright 2019 Jesse Chan
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +15,7 @@
  *
  */
 
-package tv.yatse.plugin.avreceiver.sample
+package io.jesec.yatse.plugin.lg
 
 import android.os.Handler
 import android.os.Looper
@@ -26,7 +27,7 @@ import java.util.ArrayList
 import tv.yatse.plugin.avreceiver.api.AVReceiverPluginService
 import tv.yatse.plugin.avreceiver.api.PluginCustomCommand
 import tv.yatse.plugin.avreceiver.api.YatseLogger
-import tv.yatse.plugin.avreceiver.sample.helpers.PreferencesHelper
+import io.jesec.yatse.plugin.lg.helpers.PreferencesHelper
 
 /**
  * Sample AVReceiverPluginService that implement all functions with dummy code that displays Toast and logs to main Yatse log system.

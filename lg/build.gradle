@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 Tolriq / Genimee.
+ * Copyright 2019 Jesse Chan
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +25,7 @@ android {
     buildToolsVersion '29.0.2'
 
     defaultConfig {
-        applicationId "tv.yatse.plugin.avreceiver.sample"
+        applicationId "io.jesec.yatse.plugin.lg"
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
